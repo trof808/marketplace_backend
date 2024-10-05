@@ -11,6 +11,7 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { Public } from 'src/shared/publicMetadata';
 
 @Controller('products')
 export class ProductsController {
@@ -21,11 +22,13 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
+  @Public()
   @Get()
   findAll(@Query('page') page?: number, @Query('limit') limit?: number) {
     return this.productsService.findAll(page, limit);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
@@ -41,6 +44,7 @@ export class ProductsController {
     return this.productsService.remove(+id);
   }
 
+  @Public()
   @Get('search')
   search(
     @Query('title') title: string,

@@ -6,6 +6,11 @@ import * as bcrypt from 'bcryptjs';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/entities/user.entity';
 import { LoginUserDto } from './dto/login-auth.dto';
+import { JwtAuthData } from './dto/jwt-auth-data.dto';
+
+export type LoginResponse = {
+  access_token: string;
+};
 
 @Injectable()
 export class AuthService {
@@ -25,7 +30,7 @@ export class AuthService {
     return { message: 'user registered' };
   }
 
-  async login(loginDto: LoginUserDto): Promise<{ access_token: string }> {
+  async login(loginDto: LoginUserDto): Promise<LoginResponse> {
     const user = await this.usersRepository.findOne({
       where: { email: loginDto.email },
     });
@@ -34,7 +39,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = { email: user.email, sub: user.id };
+    const payload: JwtAuthData = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };

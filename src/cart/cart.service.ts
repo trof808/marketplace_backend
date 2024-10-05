@@ -5,6 +5,7 @@ import { Cart } from './entities/cart.entity';
 import { CartItem } from './entities/cart-item.entity';
 import { SaveCartDto } from './dto/save-cart.dto';
 import { Product } from '../products/entities/product.entity';
+import { JwtAuthData } from 'src/auth/dto/jwt-auth-data.dto';
 
 @Injectable()
 export class CartService {
@@ -17,15 +18,18 @@ export class CartService {
     private productRepository: Repository<Product>,
   ) {}
 
-  async saveCart(saveCartDto: SaveCartDto): Promise<Cart> {
+  async saveCart(
+    saveCartDto: SaveCartDto,
+    userData: JwtAuthData,
+  ): Promise<Cart> {
     const cart = await this.cartRepository.findOne({
-      where: { user_id: saveCartDto.userId },
+      where: { user_id: userData.sub },
       relations: ['items'],
     });
 
     if (!cart) {
       const newCart = this.cartRepository.create({
-        user_id: saveCartDto.userId,
+        user_id: userData.sub,
       });
       return await this.cartRepository.save(newCart);
     }
@@ -67,15 +71,15 @@ export class CartService {
     return cart;
   }
 
-  async getCart(userId: number): Promise<Cart> {
+  async getCart(userData: JwtAuthData): Promise<Cart> {
     return await this.cartRepository.findOne({
-      where: { user_id: userId },
+      where: { user_id: userData.sub },
       relations: ['items'],
     });
   }
 
-  async clearCart(userId: number): Promise<void> {
-    const cart = await this.getCart(userId);
+  async clearCart(userData: JwtAuthData): Promise<void> {
+    const cart = await this.getCart(userData);
 
     // Удаляем все элементы из корзины
     await this.cartItemRepository.delete({ cart: { id: cart.id } });
