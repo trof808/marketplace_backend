@@ -18,15 +18,7 @@ export class AuthController {
   }
 
   @Public()
-  @ApiBody({
-    type: LoginUserDto,
-    schema: {
-      example: {
-        email: 'test@gmail.com',
-        password: '123',
-      },
-    },
-  })
+  @ApiBody({ type: LoginUserDto })
   @ApiResponse({
     status: 200,
     schema: {

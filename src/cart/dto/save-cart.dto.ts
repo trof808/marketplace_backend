@@ -1,11 +1,14 @@
-import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsArray } from 'class-validator';
 
 export class SaveCartDto {
-  @IsNumber()
-  @IsNotEmpty()
-  userId: number;
-
   @IsArray()
+  @ApiProperty({
+    example: [
+      { productId: 11, quantity: 2 },
+      { productId: 3, quantity: 25 },
+    ],
+  })
   items: Array<{
     productId: number;
     quantity: number;

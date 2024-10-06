@@ -64,7 +64,7 @@ export class ProductsService {
   }
 
   async search(
-    title: string,
+    title: string = '',
     page: number = 1,
     limit: number = 10,
   ): Promise<PaginatedResponse<Product>> {
