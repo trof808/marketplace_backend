@@ -1,11 +1,24 @@
-Запуск проекта
+# Запуск проекта
+
+Для запуска проекта используйте следующую команду:
 
 `docker-compose -f docker-compose.dev.yml up --build`
 
-Сгенерировать 1000 продуктов в базе
+## Сгенерировать продукты в базе
 
-`docker-compose -f docker-compose.dev.yml exec app ts-node src/products/seed.ts`
+Для генерации продуктов в базе данных используйте команду:
 
-Swagger
+`docker-compose -f docker-compose.dev.yml exec app ts-node src/products/seed.ts <count> [--clear]`
 
-`http://localhost:8888/api#/`
+### Параметры:
+- `<count>` - число продуктов (по умолчанию 1000)
+- `--clear` - флаг очистки значений в базе
+
+### Пример:
+`docker-compose -f docker-compose.dev.yml exec app ts-node src/products/seed.ts 500 --clear`
+
+## Swagger
+
+Документация API доступна по следующему адресу:
+
+[http://localhost:8888/api#/](http://localhost:8888/api#/)

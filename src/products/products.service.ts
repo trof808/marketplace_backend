@@ -4,11 +4,24 @@ import { Like, Repository } from 'typeorm';
 import { Product } from './entities/product.entity'; // Adjust the path as necessary
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { formatProduct } from './utils/formatProducts'
 
 export interface PaginatedResponse<T> {
   products: T[];
   total: number;
   page: number;
+}
+
+export interface FormattedProduct {
+  id: number;
+  title: string;
+  description: string;
+  price: {
+    amount: number;
+    currency: string;
+  };
+  categoryId: number;
+  availableCount: number;
 }
 
 @Injectable()
@@ -67,15 +80,17 @@ export class ProductsService {
     title: string = '',
     page: number = 1,
     limit: number = 10,
-  ): Promise<PaginatedResponse<Product>> {
+  ): Promise<PaginatedResponse<FormattedProduct>> {
     const [products, total] = await this.productRepository.findAndCount({
-      where: { name: Like(`%${title}%`) }, // Use 'Like' for partial matching
+      where: { title: Like(`%${title}%`) }, // Use 'Like' for partial matching
       take: limit,
       skip: (page - 1) * limit,
     });
 
+    const formattedProducts = products.map(formatProduct);
+
     return {
-      products,
+      products: formattedProducts,
       total,
       page,
     };

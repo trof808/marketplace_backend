@@ -40,10 +40,12 @@ export class CartController {
             updated_at: '2024-10-05T19:14:32.525Z',
             product: {
               id: 3,
-              name: 'Fantastic Cotton Pants',
+              title: 'Fantastic Cotton Pants',
               description:
                 'New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart',
-              price: '177.89',
+              price: 177.89,
+              currency: "USD",
+              availableCount: 4,
               category_id: null,
               created_at: '2024-10-05T13:48:10.236Z',
               updated_at: '2024-10-05T13:48:10.236Z',
