@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-auth.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from 'src/shared/publicMetadata';
+import { Public } from '../shared/publicMetadata';
 
 @ApiTags('auth')
 @Controller('auth')
