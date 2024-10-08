@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Public } from 'src/shared/publicMetadata';
+import { Public } from '../shared/publicMetadata';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('products')
