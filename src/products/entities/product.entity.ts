@@ -5,14 +5,20 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @Column('text')
+  title: string;
 
   @Column('text')
   description?: string;
 
   @Column('decimal')
   price: number;
+
+  @Column('text')
+  currency: string;
+
+  @Column('decimal')
+  availableCount: number;
 
   @Column({ nullable: true })
   category_id?: number;
