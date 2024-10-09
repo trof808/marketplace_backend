@@ -92,7 +92,7 @@ export class ProductsService {
     return {
       products: formattedProducts,
       total,
-      page,
+      page: Number(page),
     };
   }
 }
