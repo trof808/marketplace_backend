@@ -7,6 +7,15 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
 
+  const isProd = process.env.NODE_ENV === 'production';
+
+  if (!isProd)
+    app.enableCors({
+      origin: 'http://localhost:3000', // Укажите адрес вашего фронтенда
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+    });
+
   // Настройка Swagger
   const config = new DocumentBuilder()
     .setTitle('Marketplace API')

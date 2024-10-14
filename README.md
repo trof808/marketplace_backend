@@ -1,5 +1,9 @@
 # Запуск проекта
 
+Скопировать .env.copy в .env.dev и заполнить переменные окружения значениями
+
+`cp .env.copy .env.dev`
+
 Для запуска проекта используйте следующую команду:
 
 `docker-compose -f docker-compose.dev.yml up --build`
