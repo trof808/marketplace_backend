@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { Like, In, Repository } from 'typeorm';
 import { Product } from './entities/product.entity'; // Adjust the path as necessary
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -78,11 +78,15 @@ export class ProductsService {
 
   async search(
     title: string = '',
+    ids: number[] = [],
     page: number = 1,
     limit: number = 10,
   ): Promise<PaginatedResponse<FormattedProduct>> {
     const [products, total] = await this.productRepository.findAndCount({
-      where: { title: Like(`%${title}%`) }, // Use 'Like' for partial matching
+      where: { 
+        title: Like(`%${title}%`),
+        ...(ids && ids.length > 0 ? { id: In(ids) } : {}),
+      },
       take: limit,
       skip: (page - 1) * limit,
     });
