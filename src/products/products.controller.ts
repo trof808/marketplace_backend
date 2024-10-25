@@ -17,6 +17,12 @@ export class ProductsController {
     type: String,
   })
   @ApiQuery({
+    name: 'id',
+    required: false,
+    description: 'Filter items by id',
+    type: String,
+  })
+  @ApiQuery({
     name: 'page',
     required: false,
     description: 'Page number for pagination',
@@ -30,9 +36,11 @@ export class ProductsController {
   })
   search(
     @Query('title') title?: string,
+    @Query('id') id?: string,
     @Query('page') page?: number,
     @Query('limit') limit?: number,
   ) {
-    return this.productsService.search(title, page, limit);
+    const idArray = id ? id.split(',').map(item => parseInt(item, 10)) : [];
+    return this.productsService.search(title, idArray, page, limit);
   }
 }
