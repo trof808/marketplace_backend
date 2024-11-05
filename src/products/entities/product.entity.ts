@@ -1,3 +1,4 @@
+import { DecimalColumn } from 'src/shared/columnDecorators/DecimalColumn'
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -11,13 +12,13 @@ export class Product {
   @Column('text')
   description?: string;
 
-  @Column('decimal')
+  @DecimalColumn()
   price: number;
 
   @Column('text')
   currency: string;
 
-  @Column('decimal')
+  @DecimalColumn()
   availableCount: number;
 
   @Column({ nullable: true })

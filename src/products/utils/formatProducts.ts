@@ -7,10 +7,10 @@ export function formatProduct(product: Product): FormattedProduct {
     title: product.title,
     description: product.description,
     price: {
-      amount: Number(product.price),
+      amount: product.price,
       currency: product.currency,
     },
     categoryId: 0,
-    availableCount: Number(product.availableCount),
+    availableCount: product.availableCount,
   };
 }
