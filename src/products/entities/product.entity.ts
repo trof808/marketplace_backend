@@ -1,4 +1,4 @@
-import { DecimalColumn } from 'src/shared/columnDecorators/DecimalColumn'
+import { DecimalColumn } from '../../shared/columnDecorators/DecimalColumn';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
