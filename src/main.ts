@@ -15,6 +15,11 @@ async function bootstrap() {
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
     });
+    app.enableCors({
+      origin: 'http://localhost:5173', // Укажите адрес вашего фронтенда
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+    });
 
   // Настройка Swagger
   const config = new DocumentBuilder()
