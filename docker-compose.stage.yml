@@ -1,0 +1,28 @@
+---
+services:
+  db:
+    image: postgres:17-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: marketplace_db
+    container_name: marketplace-postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  app:
+    build:
+      context: .
+      dockerfile: ./deploy/stage/Dockerfile
+    container_name: marketplace-backend
+    ports:
+      - 8888:8888
+    env_file:
+      - .env.stage
+    depends_on:
+      - db
+    volumes:
+      - ./src:/app/src
+volumes:
+  db_data: {}
