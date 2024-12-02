@@ -1,0 +1,41 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch if necessary.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # - name: Log in to Docker Hub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # - name: Build and Push Docker Images
+      #   run: |
+      #     # Build the images defined in docker-compose.stage.yml
+      #     docker-compose -f docker-compose.stage.yml build
+      #     # Push the images to Docker Hub
+      #     docker-compose -f docker-compose.stage.yml push
+
+      - name: SSH into Server and Deploy
+        env:
+          HOST: ${{ secrets.SERVER_IP }}
+          USERNAME: ${{ secrets.SERVER_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key $USERNAME@$HOST << 'EOF'
+            # Pull the latest images and run the containers
+            docker compose -f docker-compose.stage.yml down  # Stop existing containers
+            docker compose -f docker-compose.stage.yml up -d --build  # Start new containers
+          EOF
