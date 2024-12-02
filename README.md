@@ -29,7 +29,7 @@
 3. Создать файл .env.stage в корне и заполнить переменными окружения
 
 4. Запустить сборку контейнера
-`docker-compose -f docker-compose.dev.yml up -d --build`
+`docker-compose -f docker-compose.stage.yml up -d --build`
 
 5. Сконфигурировать nginx
 
