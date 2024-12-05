@@ -16,6 +16,9 @@
 Пример:
 `docker-compose -f docker-compose.dev.yml exec app ts-node src/products/seed.ts 500 --clear`
 
+Пример для prod:
+`docker-compose -f docker-compose.stage.yml exec app node dist/products/seed.js 500 --clear`
+
 Документация API доступна по следующему адресу:
 [http://localhost:8888/api#/](http://localhost:8888/api#/)
 
