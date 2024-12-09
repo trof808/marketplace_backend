@@ -1,36 +1,9 @@
-# name: Deploy to Production
-
-# on:
-#   push:
-#     branches:
-#       - main  # Change this to your default branch if necessary.
-
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: SSH into Server and Deploy
-#         env:
-#           HOST: ${{ secrets.SERVER_IP }}
-#           USERNAME: ${{ secrets.SERVER_USER }}
-#           PASSWORD: ${{ secrets.PASSWORD }}
-#           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-#         run: |
-#           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
-#           chmod 600 private_key
-#           ssh root@77.232.130.90 << 'EOF'
-#             # Pull the latest images and run the containers
-#             docker compose -f docker-compose.stage.yml down  # Stop existing containers
-#             docker compose -f docker-compose.stage.yml up -d --build  # Start new containers
-#           EOF
-
 name: Deploy to Production
 
 on:
   push:
     branches:
-      - main  # Change this to your default branch if necessary.
+      - main
 
 jobs:
   deploy:
@@ -41,6 +14,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Add known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Set up SSH
         uses: appleboy/ssh-action@v1.2.0
@@ -53,12 +31,3 @@ jobs:
             cd ./repos/marketplace_backend
             docker compose -f docker-compose.stage.yml down  # Stop existing containers
             docker compose -f docker-compose.stage.yml up -d --build  # Start new containers
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # - name: SSH into Server and Deploy
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-      #       # Pull the latest images and run the containers
-      #       docker compose -f docker-compose.stage.yml down  # Stop existing containers
-      #       docker compose -f docker-compose.stage.yml up -d --build  # Start new containers
-      #     EOF
