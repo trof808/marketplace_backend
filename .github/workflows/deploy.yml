@@ -33,9 +33,10 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key $USERNAME@$HOST << 'EOF'
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          ssh root@77.232.130.90 << 'EOF'
             # Pull the latest images and run the containers
             docker compose -f docker-compose.stage.yml down  # Stop existing containers
             docker compose -f docker-compose.stage.yml up -d --build  # Start new containers
