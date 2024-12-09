@@ -35,25 +35,30 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: appleboy/ssh-action@v1.2.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-
-      - name: SSH into Server and Deploy
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            # Pull the latest images and run the containers
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd ./repos/marketplace_backend
             docker compose -f docker-compose.stage.yml down  # Stop existing containers
             docker compose -f docker-compose.stage.yml up -d --build  # Start new containers
-          EOF
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # - name: SSH into Server and Deploy
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+      #       # Pull the latest images and run the containers
+      #       docker compose -f docker-compose.stage.yml down  # Stop existing containers
+      #       docker compose -f docker-compose.stage.yml up -d --build  # Start new containers
+      #     EOF
