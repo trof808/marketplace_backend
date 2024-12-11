@@ -12,12 +12,7 @@ async function bootstrap() {
 
   if (!isProd)
     app.enableCors({
-      origin: 'http://localhost:3000', // Укажите адрес вашего фронтенда
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      credentials: true,
-    });
-    app.enableCors({
-      origin: 'http://localhost:5173', // Укажите адрес вашего фронтенда
+      origin: ['http://localhost:3000', 'http://localhost:5173'],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
     });
